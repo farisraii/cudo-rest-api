@@ -46,7 +46,17 @@ func orgHirarki(orgMap map[string]*Organization, orgID string) Organization {
 }
 
 func handleRequest(c *gin.Context) {
-	organizationID := c.Param("organization_id")
+
+	var req struct {
+		OrganizationID string `json:"organization_id"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request format"})
+		return
+	}
+
+	organizationID := req.OrganizationID
 	if organizationID == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing organization_id parameter"})
 		return
@@ -110,7 +120,7 @@ func main() {
 
 	router := gin.Default()
 
-	router.POST("/GenerateJSONStructure/:organization_id", handleRequest)
+	router.POST("/GenerateJSONStructure/", handleRequest)
 
 	port := os.Getenv("PORT")
 	if port == "" {
