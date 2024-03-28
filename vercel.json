@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "builds": [
-    { "src": "api/*.go", "use": "@vercel/go" }
-  ],
-  "routes": [
-    { "src": "/GenerateJSONStructure", "methods": ["POST"] }
-  ]
-}
